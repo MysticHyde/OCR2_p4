@@ -52,15 +52,13 @@ function handleSubmit() {
 						if (isValid) {
 							data.first = input.value
 							return;
-							
+
 						} else {
 							error = "Prénom non valide";
 						}
 					} else {
 						error = "Prénom trop court";
 					}
-
-
 				} else {
 					error = "Veuillez compléter le champ";
 				}
@@ -89,26 +87,53 @@ function handleSubmit() {
 				}
 				setError(formDataElement, error)
 				break;
-			// case 'email':
-			// 	isValid = validateEmail(input.value);
-			// 	if (!isValid) {
-			// 		error = "Adresse email non valide";
-			// 		formDataElement.setAttribute('data-error', error);
-			// 	}
-			// 	break;
-			// 	break;
-			// case 'birthdate':
-			// 	break;
-			// case 'quantity':
-			// 	break;
-			// case 'location':
-			// 	break;
+
+			case 'birthdate':
+				removeError(formDataElement);
+				if (input.value) {
+					let birthDate = new Date(input.value);
+					let currentDate = new Date();
+					let minDate = new Date(currentDate);
+					minDate.setFullYear(currentDate.getFullYear() - 10); // 10 ans avant la date actuelle
+					if (!isNaN(birthDate.getTime()) && birthDate <= currentDate && birthDate >= minDate) {
+						isValid = true;
+						data.birthdate = input.value;
+					} else {
+						error = "Date de naissance non valide";
+					}
+				} else {
+					error = "Veuillez compléter le champ";
+				}
+				setError(formDataElement, error);
+				break;
+			case 'quantity':
+				removeError(formDataElement);
+				if (input.value && !isNaN(input.value)) {
+					isValid = true;
+					data.quantity = parseInt(input.value);
+				} else {
+					error = "Veuillez saisir une quantité valide";
+				}
+				setError(formDataElement, error);
+				break;
+			case 'location':
+				removeError(formDataElement);
+				let checkedLocations = document.querySelectorAll('input[name="location"]:checked');
+				if (checkedLocations.length > 0) {
+					isValid = true;
+					data.location = checkedLocations[0].value;
+					return
+				} else {
+					error = "Veuillez choisir une location";
+				}
+				setError(formDataElement, error);
+				break;
 			default:
 				break;
 		}
 	});
+	console.log(data)
 }
-
 
 // Validate functions
 function validateFirstName(firstName) {
@@ -146,12 +171,12 @@ function closeModal() {
 }
 
 function resetData() {
-	data.first = '';
-	data.last = '';
-	data.email = '';
-	data.birthdate = '';
-	data.quantity = '';
-	data.location = '';
+	data.first = null;
+	data.last = null;
+	data.email = null;
+	data.birthdate = null;
+	data.quantity = null;
+	data.location = null;
 }
 
 function setError(element, error) {
@@ -160,6 +185,6 @@ function setError(element, error) {
 }
 
 function removeError(element) {
-	element.setAttribute('data-error', '');
-	element.setAttribute('data-error-visible', 'false');
+	element.removeAttribute('data-error');
+	element.removeAttribute('data-error-visible');
 }
