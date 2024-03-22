@@ -11,6 +11,8 @@ const modalbg = document.querySelector(".bground");
 const modalOpenBtn = document.querySelectorAll(".modal-btn");
 const modalCloseBtns = document.querySelectorAll(".close");
 
+const openCloseMenuBtn = document.querySelector("#openCloseMenu");
+
 const formData = document.querySelectorAll(".formData");
 const form = document.querySelector("form");
 
@@ -37,6 +39,7 @@ let data = {
   checkbox2: Boolean,
 };
 
+openCloseMenuBtn.addEventListener('click', editNav)
 modalOpenBtn.forEach((btn) => btn.addEventListener("click", openModal));
 modalCloseBtns.forEach((button) => {
   button.addEventListener("click", closeModal);
